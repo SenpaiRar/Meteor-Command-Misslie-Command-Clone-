@@ -20,7 +20,7 @@ public class MeteorSpawner : MonoBehaviour {
     void SpawnMeteor(float end,GameObject M,float start = 0)//start is defaulted to 0, if not specified
     {
         float rand = Random.Range(start, end);
-        Debug.Log(rand);
+      //  Debug.Log(rand);
         Instantiate(M, new Vector3(rand,0,0),Quaternion.identity);
     }
 }

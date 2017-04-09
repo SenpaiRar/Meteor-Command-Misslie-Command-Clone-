@@ -11,7 +11,7 @@ public class TargetList : MonoBehaviour {
         {
             cityPositions.Add(item.position);
             //Instantiate(GameObject.Find("Cube"), item.position, Quaternion.identity);
-            Debug.Log(item.position);
+         //   Debug.Log(item.position);
         }
         cityVecs = cityPositions.ToArray();
 	}
