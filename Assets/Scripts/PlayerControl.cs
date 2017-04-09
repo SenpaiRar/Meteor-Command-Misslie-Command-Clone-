@@ -14,7 +14,8 @@ public class PlayerControl : MonoBehaviour {
 	void Update () {
         if (Input.GetMouseButtonDown(0) && !missileOut)
         {
-            missileTarget = GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+            missileTarget = new Vector3(GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x, GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).y,0);
+            
             LaunchMissile();
         }
         

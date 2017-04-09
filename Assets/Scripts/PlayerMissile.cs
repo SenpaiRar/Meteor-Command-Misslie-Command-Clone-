@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 public class PlayerMissile : MonoBehaviour {
     public float speed;
+    public float rangeOfDestruction;
     Vector3 activeTarget;
-	void Start () {
+    
+    void Start () {
         activeTarget = GameObject.Find("Main Camera").GetComponent<PlayerControl>().missileTarget;
 	}
 	
@@ -22,7 +24,20 @@ public class PlayerMissile : MonoBehaviour {
 
     void Explode()
     {
+        List<GameObject> meteorsToDestroy = new List<GameObject>();
         PlayerControl.missileOut = false;
+        foreach (var item in GameSetup.meteorGroup)
+        {
+            if (Vector3.Distance(transform.position,item.transform.position) < rangeOfDestruction)
+            {
+                meteorsToDestroy.Add(item);
+            }
+        }
+
+        foreach (var item in meteorsToDestroy)
+        {
+            item.GetComponent<Meteor>().ExplodeByMissile();
+        }
         Destroy(gameObject);
     }
 }

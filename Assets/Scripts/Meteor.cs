@@ -23,10 +23,28 @@ public class Meteor : MonoBehaviour {
 	
 	void Update () {
 
-        if(Vector3.Distance(transform.position,activeTarget) > 5)
+        if(Vector3.Distance(transform.position,activeTarget) > 0.5f)
         {
             transform.position = Vector3.MoveTowards(transform.position, activeTarget, speed * Time.deltaTime);
+
+        }
+        else
+        {
+            ExplodeOnImpact();
         }
        
+    }
+
+    void ExplodeOnImpact()
+    {
+        GameSetup.meteorGroup.Remove(gameObject);
+        Destroy(gameObject);
+        //TODO: Do Damage To City
+    }
+
+    public void ExplodeByMissile()
+    {
+        GameSetup.meteorGroup.Remove(gameObject);
+        Destroy(gameObject);
     }
 }
