@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
-    public Transform missileLauncher;
+    public Transform missileOrigin;
     public GameObject missile;
     public Vector3 missileTarget;
     public static bool missileOut; //Has a missile been spawned already?
@@ -24,6 +24,6 @@ public class PlayerControl : MonoBehaviour {
     void LaunchMissile()
     {
         missileOut = true;
-        Instantiate(missile, missileLauncher.position, Quaternion.identity);
+        Instantiate(missile, missileOrigin.position, Quaternion.identity);
     }
 }

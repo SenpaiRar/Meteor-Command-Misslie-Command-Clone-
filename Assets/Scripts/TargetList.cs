@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class TargetList : MonoBehaviour {
     GameObject MasterCity;
-    private List<Vector3> cityPositions = new List<Vector3>();
+    public List<Vector3> cityPositions = new List<Vector3>();
     public Vector3[] cityVecs;
 
     void Start () {
