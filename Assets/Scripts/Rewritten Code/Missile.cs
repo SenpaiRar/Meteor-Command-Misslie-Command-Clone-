@@ -2,21 +2,23 @@
 using System.Collections;
 
 public class Missile : MonoBehaviour {
+    public delegate void ExplodeDelegate(Transform trans);
+    public static event ExplodeDelegate ExplodeEvent;
 
-    public Vector3 Target;
-    public float speed;
-
+    public Vector3 ActiveTarget;
+    public float Speed;
+    public float DestroyRange;
     void Start () {
-	
+        GetTarget();
+
 	}
 	
 	
 	void LateUpdate () {
         
-       
-        if (Vector3.Distance(transform.position, Target) > 1)
+        if (Vector3.Distance(transform.position, ActiveTarget) > 1)
         {
-            transform.position = Vector3.MoveTowards(transform.position, Target, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, ActiveTarget, Speed * Time.deltaTime);
         }
         else
         {
@@ -26,7 +28,17 @@ public class Missile : MonoBehaviour {
     
     public void Explode()
     {
-        Debug.Log(gameObject.name + " has been destroyed");
         Destroy(gameObject);
+        if(ExplodeEvent != null)
+        {
+            ExplodeEvent(this.transform);
+        }
     }
+
+    void GetTarget()
+    {
+        ActiveTarget = (GameObject.Find("Main Camera").GetComponent<Player>().missileTarget);
+        return;
+    }
+    
 }
