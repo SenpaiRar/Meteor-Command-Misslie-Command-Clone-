@@ -2,13 +2,24 @@
 using System.Collections;
 
 public class Meteor : MonoBehaviour {
+    public delegate void CityHit(GameObject CityHit);
+    public static event CityHit HitEvent;
 
-    Vector3 ActiveTarget;
+    Vector3 ActiveTarget = new Vector3(100,100,100);
     public float speed;
    
     void Start () {
         Missile.ExplodeEvent += ExplodeByMissile;
-        ActiveTarget = new Vector3(0, -20, 0);
+
+        foreach (var item in GameObject.FindGameObjectsWithTag("City"))
+        {
+            Vector3 temp = item.transform.position;
+
+            if (Vector3.Distance(temp, transform.position) < Vector3.Distance(ActiveTarget, transform.position))
+            {
+                ActiveTarget = temp;
+            } 
+        }
     }
 
 
@@ -21,23 +32,48 @@ public class Meteor : MonoBehaviour {
         else
         {
             Explode();
+
         }
     }
 
-    public void Explode()
+    public void HitCity(GameObject City)
     {
-        Missile.ExplodeEvent -= ExplodeByMissile;
+       
+    }
+
+    public void Explode()//TODO: Make this 2 methods. One to damage the city, and one to destroy the gameobject. If i dont, there are cases where another metoer will destroy the city and cause this one to just stop
+    {
+        if (HitEvent != null)
+        {
+            HitEvent(GetNearestCity());
+        }
+        Missile.ExplodeEvent -= ExplodeByMissile; //Unsubscribe the event to not raise errors later
         Destroy(gameObject);
     }
     
-    public void ExplodeByMissile (Transform trans)
+    public void ExplodeByMissile (Transform trans) //When a missile explodes, this functions check wether the meteor should be destroyed
     {
-
-        if(Vector3.Distance(trans.position,transform.position) < 10)
+        if(Vector3.Distance(trans.position,transform.position) < 10) //Is meteor and missile within 10 units?
         {
-            Missile.ExplodeEvent -= ExplodeByMissile;
+            Missile.ExplodeEvent -= ExplodeByMissile; //If so, destroy the gameOBject and unsubscribe from the event
             Destroy(gameObject);
         }
     }
 
+    GameObject GetNearestCity()
+    {
+        GameObject temp = new GameObject();
+        temp.transform.position = new Vector3(100, 100, 100);
+        GameObject[] listOfCities = GameObject.FindGameObjectsWithTag("City");
+
+        foreach (var item in listOfCities)
+        {
+            if (Vector3.Distance(item.transform.position, item.transform.position) < Vector3.Distance(temp.transform.position, item.transform.position))
+            {
+                temp = item;
+            }
+        }
+        Destroy(temp);
+        return (temp);
+    }
 }

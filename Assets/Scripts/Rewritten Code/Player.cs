@@ -17,9 +17,9 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0) && !isMissleFired)
+        if (Input.GetMouseButtonDown(0) && !isMissleFired) //when the user hits the left mouse button
         {
-            SetTarget();
+            SetTarget(); 
             
             LaunchMissile(missile.GetComponent<Missile>());
         }
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour {
         
     }
 
-    void SetTarget ()
+    void SetTarget () //Get the point where the mouse cursor is at, and make that the target
     {
         missileTarget.x = mainCamera.ScreenToWorldPoint(Input.mousePosition).x;
         missileTarget.y = mainCamera.ScreenToWorldPoint(Input.mousePosition).y;
