@@ -4,36 +4,49 @@ using System.Collections;
 public class Player : MonoBehaviour {
     public delegate void LaunchDelegate();
     public event LaunchDelegate LaunchEvent;
-    
+
+    public delegate void AmmoDelegate(int CurrentAmmo);
+    public static event AmmoDelegate AmmoEvent;
+
     public Vector3 missileTarget;
     public Transform missileOrigin;
     public GameObject missile;
     public Camera mainCamera;
     private bool canShoot;
-    private int amountOfMissilesFired;
+    private int AmountOfMissilesFired;
     public int AmountOfMissileCanShoot; //How many missiles does the play have before reloading
-	void Start () {
-        amountOfMissilesFired = 0;
+    public float reloadTime;
+
+    void Start () {
+        
+        AmountOfMissilesFired = 0;
         canShoot = true;
     }
 	
 	
 	void Update () {
+       
+
         if (Input.GetMouseButtonDown(0) && canShoot) //when the user hits the left mouse button
         {
-            if (amountOfMissilesFired < 3)
+            
+            if (AmountOfMissilesFired < AmountOfMissileCanShoot)
             {
-                amountOfMissilesFired += 1;
+                AmountOfMissilesFired += 1;
+
                 SetTarget();
+
                 LaunchMissile(missile.GetComponent<Missile>());
+                
             }
             else
             {
                 canShoot = false;
                 StartCoroutine(Reload());
             }
-         
         }
+
+        AmmoEvent(AmountOfMissileCanShoot - AmountOfMissilesFired);
         
     }
 
@@ -59,9 +72,13 @@ public class Player : MonoBehaviour {
     IEnumerator Reload()
     {
         Debug.Log("Reload!");
-        yield return new WaitForSeconds(2);
+
+        yield return new WaitForSeconds(reloadTime);
+
         canShoot = true;
-        amountOfMissilesFired = 0;
+
+        AmountOfMissilesFired = 0;
+        
         yield break;
     }
 }

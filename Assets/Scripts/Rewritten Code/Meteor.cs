@@ -5,6 +5,9 @@ public class Meteor : MonoBehaviour {
     public delegate void CityHit(Vector3 PositionAtHit);//change GameObject to Vector3
     public static event CityHit HitEvent;
 
+    public delegate void OnMeteorDestroy();
+    public static event OnMeteorDestroy MeteorDestroyed;
+
     Vector3 ActiveTarget = new Vector3(100,100,100);
     public float speed;
    
@@ -49,6 +52,10 @@ public class Meteor : MonoBehaviour {
     {
         if(Vector3.Distance(trans.position,transform.position) < 10) //Is meteor and missile within 10 units?
         {
+            if(MeteorDestroyed != null)
+            {
+                MeteorDestroyed();
+            }
             Missile.ExplodeEvent -= ExplodeByMissile; //If so, destroy the gameOBject and unsubscribe from the event
             Destroy(gameObject);
         }
