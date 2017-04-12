@@ -3,7 +3,7 @@ using System.Collections;
 
 public class City : MonoBehaviour {
     public delegate void OnDamageTaken();
-    public static event OnDamageTaken DamageEvent;
+    public static event OnDamageTaken DamageEvent; //When the city has taken damage
 
     public delegate void OnDeathOfCity();
     public event OnDeathOfCity DeathEvent; //When the city has died
@@ -11,23 +11,22 @@ public class City : MonoBehaviour {
     public int health;
 	void Start () {
         Meteor.HitEvent += TakeDamage;
-        City.DamageEvent += CheckHealth;
-        this.DeathEvent += KillCity;
+        DamageEvent += CheckHealth;
+        this.DeathEvent += KillCity; //Has to been (this.) so it doesn't delete the other ciites
     }
 	
-	// Update is called once per frame
+	
 	void Update () {
-        Debug.Log("The health of " + gameObject.name + " is " + health);
+      
 	}
 
-    void TakeDamage(GameObject Hit)
+    void TakeDamage(Vector3 Pos)
     {
-        if(Hit == this.gameObject)
+        if(Vector3.Distance(transform.position,Pos) < 1)
         {
             health -= 10;
             DamageEvent();
         }
-        
     }
 
     void CheckHealth()
