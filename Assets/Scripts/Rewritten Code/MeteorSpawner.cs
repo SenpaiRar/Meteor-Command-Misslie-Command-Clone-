@@ -15,10 +15,6 @@ public class MeteorSpawner : MonoBehaviour {
         StartCoroutine(Example());
 	}
 	
-	
-	void Update () {
-	
-	}
 
     void SpawnMeteor(GameObject Meteor, float min, float max)
     {

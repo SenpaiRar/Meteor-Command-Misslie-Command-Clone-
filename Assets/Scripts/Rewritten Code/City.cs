@@ -15,10 +15,6 @@ public class City : MonoBehaviour {
         this.DeathEvent += KillCity; //Has to been (this.) so it doesn't delete the other ciites
     }
 	
-	
-	void Update () {
-      
-	}
 
     void TakeDamage(Vector3 Pos)
     {
