@@ -24,8 +24,7 @@ public class Meteor : MonoBehaviour {
             } 
         }
     }
-
-
+    
     void LateUpdate()
     {
         if (Vector3.Distance(transform.position, ActiveTarget) > 1)
